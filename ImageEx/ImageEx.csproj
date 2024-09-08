@@ -1,32 +1,36 @@
-﻿<Project Sdk="MSBuild.Sdk.Extras">
+﻿<Project Sdk="MSBuild.Sdk.Extras/3.0.44">
 
 	<PropertyGroup>
-		<TargetFrameworks>uap10.0.19041;net6.0-windows10.0.19041;net7.0-windows10.0.19041;net8.0-windows10.0.19041</TargetFrameworks>
-		<TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+        <!-- Platform Properties -->
+        <Platforms>x64</Platforms>
+        <TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
+        <WindowsSdkPackageVersion>10.0.22621.41</WindowsSdkPackageVersion>
+        <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+        <EnableWindowsTargeting>true</EnableWindowsTargeting>
+        <EnableMsixTooling>true</EnableMsixTooling>
 		<OutputType>Library</OutputType>
-		<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-		<LangVersion>11.0</LangVersion>
-		<NoWarn>NETSDK1023;CA1416</NoWarn>
+		<LangVersion>12.0</LangVersion>
 		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
 		<DebugType>embedded</DebugType>
-	</PropertyGroup>
+        <!-- Assembly Info Properties-->
+        <AssemblyTitle>ImageEx</AssemblyTitle>
+        <Product>ImageEx</Product>
+        <PackageId>ImageEx</PackageId>
+        <Version>3.0.0</Version>
+        <Description>Extended Image Control for UWP and WinUI apps. Originally developed for WCT, initially desynced by 4OTbIPE, forked by CollapseLauncher project to maintain its codebase.</Description>
+        <Authors>Byklex, WindowsCommunityToolkit, FourSoft (@4OTbIPE), CollapseLauncher</Authors>
+        <Copyright>Copyright 2023-2024</Copyright>
+        <PackageProjectUrl>https://github.com/CollapseLauncher/ImageEx</PackageProjectUrl>
+    </PropertyGroup>
 
 	<PropertyGroup Condition="$(TargetFramework.Contains('net8.0'))">
-		<RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
+        <IsAotCompatible>true</IsAotCompatible>
+		<RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
 	</PropertyGroup>
 	
 	<ItemGroup Condition="$(TargetFramework.Contains('windows'))">
-		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.0" />
-	</ItemGroup>
-
-	<ItemGroup Condition="$(TargetFramework.Contains('uap'))">
-		<Page Include="ImageEx.xaml" />
-		<Page Include="Themes\Generic.xaml" />
-	</ItemGroup>
-
-	<ItemGroup Condition="$(TargetFramework.Contains('uap'))">
-		<None Remove="ImageEx.xaml" />
-		<None Remove="Themes\Generic.xaml" />
+        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.240829007" />
 	</ItemGroup>
 
 </Project>
