@@ -19,7 +19,6 @@ global using Windows.UI.Xaml.Media.Imaging;
 #endif
 
 #if NETCOREAPP
-global using Microsoft.UI.Composition;
 global using Microsoft.UI.Xaml;
 global using Microsoft.UI.Xaml.Controls;
 global using Microsoft.UI.Xaml.Media;

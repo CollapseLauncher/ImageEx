@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+// ReSharper disable MemberCanBePrivate.Global
 namespace ImageEx
 {
     /// <summary>
@@ -62,6 +63,7 @@ namespace ImageEx
         /// <summary>
         /// Gets a value indicating whether control has been initialized.
         /// </summary>
+        // ReSharper disable once MemberCanBeProtected.Global
         public bool IsInitialized { get; private set; }
 
         /// <summary>
@@ -101,7 +103,7 @@ namespace ImageEx
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether gets or sets cache state
+        /// Gets or sets a value indicating whether it gets or sets cache state
         /// </summary>
         public bool IsCacheEnabled
         {
@@ -110,7 +112,7 @@ namespace ImageEx
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether gets or sets is lazy loading enable. (17763 or higher supported)
+        /// Gets or sets a value indicating whether it gets or sets is lazy loading enable. (17763 or higher supported)
         /// </summary>
         /// <remarks>Windows 10 build 17763 or higher required.</remarks>
         public bool EnableLazyLoading
@@ -148,7 +150,7 @@ namespace ImageEx
 
         private static void LazyLoadingThresholdChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is ImageExBase control && control.EnableLazyLoading)
+            if (d is ImageExBase { EnableLazyLoading: true } control)
             {
                 control.InvalidateLazyLoading();
             }

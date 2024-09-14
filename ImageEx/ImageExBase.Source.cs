@@ -2,8 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.Diagnostics;
-
 namespace ImageEx
 {
     /// <summary>
@@ -27,7 +25,7 @@ namespace ImageEx
         public object Source
         {
             get { return GetValue(SourceProperty); }
-            set { Debug.WriteLine("test3");  SetValue(SourceProperty, value); }
+            set { SetValue(SourceProperty, value); }
         }
 
         private static void SourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -85,19 +83,17 @@ namespace ImageEx
                 VisualStateManager.GoToState(this, LoadedState, true);
                 ImageExOpened?.Invoke(this, new ImageExOpenedEventArgs());
             }
-            Debug.WriteLine("test4");
         }
 
         private async void SetSource(object source)
         {
-            Debug.WriteLine("test5_1");
             if (!IsInitialized)
             {
                 return;
             }
-
-            Debug.WriteLine("test5_2");
-            _tokenSource?.Cancel();
+            
+            if (_tokenSource is { Token.IsCancellationRequested: false })
+                await _tokenSource?.CancelAsync()!;
 
             _tokenSource = new CancellationTokenSource();
 
@@ -108,10 +104,7 @@ namespace ImageEx
                 return;
             }
 
-            Debug.WriteLine("test5_3");
-
             VisualStateManager.GoToState(this, LoadingState, true);
-
             var imageSource = source as ImageSource;
             if (imageSource != null)
             {
@@ -119,7 +112,6 @@ namespace ImageEx
 
                 return;
             }
-            Debug.WriteLine("test5_4");
             var uri = source as Uri;
             if (uri == null)
             {
@@ -131,14 +123,12 @@ namespace ImageEx
                     return;
                 }
             }
-
-            Debug.WriteLine("test5_6");
+            
             if (!IsHttpUri(uri) && !uri.IsAbsoluteUri)
             {
                 uri = new Uri("ms-appx:///" + uri.OriginalString.TrimStart('/'));
             }
-
-            Debug.WriteLine("test5_7");
+            
             try
             {
                 await LoadImageAsync(uri, _tokenSource.Token);
@@ -152,8 +142,6 @@ namespace ImageEx
                 VisualStateManager.GoToState(this, FailedState, true);
                 ImageExFailed?.Invoke(this, new ImageExFailedEventArgs(e));
             }
-
-            Debug.WriteLine("test5");
         }
 
         private async Task LoadImageAsync(Uri imageUri, CancellationToken token)
@@ -174,7 +162,7 @@ namespace ImageEx
                 {
                     var source = imageUri.OriginalString;
                     const string base64Head = "base64,";
-                    var index = source.IndexOf(base64Head);
+                    var index = source.IndexOf(base64Head, StringComparison.OrdinalIgnoreCase);
                     if (index >= 0)
                     {
                         var bytes = Convert.FromBase64String(source.Substring(index + base64Head.Length));
@@ -199,13 +187,11 @@ namespace ImageEx
 
         /// <summary>
         /// This method is provided in case a developer would like their own custom caching strategy for <see cref="ImageExBase"/>.
-        /// By default it uses the built-in UWP cache provided by <see cref="BitmapImage"/> and
+        /// By default, it uses the built-in UWP cache provided by <see cref="BitmapImage"/> and
         /// the <see cref="Image"/> control itself. This method should return an <see cref="ImageSource"/>
         /// value of the image specified by the provided uri parameter.
         /// A <see cref="CancellationToken"/> is provided in case the current request is invalidated
-        /// (e.g. the container is recycled before the original image is loaded).
-        /// The Toolkit also has an image cache helper which can be used as well:
-        /// <see cref="CacheBase{T}.GetFromCacheAsync(Uri, bool, CancellationToken, List{KeyValuePair{string, object}})"/> in <see cref="ImageCache"/>.
+        /// (e.g. the container is recycled before the original image loaded).
         /// </summary>
         /// <example>
         /// <code>
@@ -234,7 +220,7 @@ namespace ImageEx
         /// <returns><see cref="Task"/></returns>
         protected virtual Task<ImageSource> ProvideCachedResourceAsync(Uri imageUri, CancellationToken token)
         {
-            // By default we just use the built-in UWP image cache provided within the Image control.
+            // By default, we just use the built-in UWP image cache provided within the Image control.
             return Task.FromResult((ImageSource)new BitmapImage(imageUri));
         }
     }

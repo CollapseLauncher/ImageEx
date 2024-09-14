@@ -17,7 +17,6 @@ namespace ImageEx
         /// Initializes a new instance of the <see cref="ImageEx"/> class.
         /// </summary>
         public ImageEx()
-            : base()
         {
             DefaultStyleKey = typeof(ImageEx);
             Debug.WriteLine(DefaultStyleKey.ToString());
