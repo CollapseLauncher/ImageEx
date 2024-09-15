@@ -19,7 +19,6 @@ namespace ImageEx
         public ImageEx()
         {
             DefaultStyleKey = typeof(ImageEx);
-            Debug.WriteLine(DefaultStyleKey.ToString());
         }
     }
 }
