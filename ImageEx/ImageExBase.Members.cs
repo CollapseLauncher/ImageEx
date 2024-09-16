@@ -3,6 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 // ReSharper disable MemberCanBePrivate.Global
+using Microsoft.UI.Composition;
+
 namespace ImageEx
 {
     /// <summary>
@@ -44,6 +46,12 @@ namespace ImageEx
         /// Identifies the <see cref="LazyLoadingThreshold"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LazyLoadingThresholdProperty = DependencyProperty.Register(nameof(LazyLoadingThreshold), typeof(double), typeof(ImageExBase), new PropertyMetadata(default(double), LazyLoadingThresholdChanged));
+
+        /// <summary>
+        /// Returns a mask that represents the alpha channel of an image as a <see cref="CompositionBrush"/>
+        /// </summary>
+        /// <returns><see cref="CompositionBrush"/></returns>
+        public abstract CompositionBrush GetAlphaMask();
 
         /// <summary>
         /// Event raised if the image failed loading.

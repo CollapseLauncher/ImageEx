@@ -32,5 +32,9 @@
 	<ItemGroup Condition="$(TargetFramework.Contains('windows'))">
         <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.240829007" />
 	</ItemGroup>
+	
+	<ItemGroup>
+	  <PackageReference Include="CommunityToolkit.WinUI.Extensions" Version="8.1.240821" />
+	</ItemGroup>
 
 </Project>
