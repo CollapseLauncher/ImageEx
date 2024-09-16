@@ -4,6 +4,8 @@
 
 // ReSharper disable MemberCanBePrivate.Global
 
+using CommunityToolkit.WinUI;
+
 namespace ImageEx
 {
     public static class Extensions
@@ -38,7 +40,7 @@ namespace ImageEx
     [TemplateVisualState(Name = UnloadedState, GroupName = CommonGroup)]
     [TemplateVisualState(Name = FailedState, GroupName = CommonGroup)]
     [TemplatePart(Name = PartImage, Type = typeof(object))]
-    public abstract partial class ImageExBase : Control
+    public abstract partial class ImageExBase : Control, IAlphaMaskProvider
     {
         private bool _isInViewport;
 
@@ -76,6 +78,9 @@ namespace ImageEx
         /// Gets the backing image object
         /// </summary>
         protected object Image { get; private set; }
+
+        /// <inheritdoc/>
+        public bool WaitUntilLoaded => true;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ImageExBase"/> class.

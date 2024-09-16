@@ -2,6 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.UI.Composition;
+
 namespace ImageEx
 {
     /// <summary>
@@ -23,6 +25,17 @@ namespace ImageEx
         {
             get { return (Thickness)GetValue(NineGridProperty); }
             set { SetValue(NineGridProperty, value); }
+        }
+
+        /// <inheritdoc/>
+        public override CompositionBrush GetAlphaMask()
+        {
+            if (IsInitialized && Image is Image image)
+            {
+                return image.GetAlphaMask();
+            }
+
+            return null;
         }
 
         /// <summary>
