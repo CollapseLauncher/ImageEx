@@ -23,6 +23,7 @@
         <Copyright>Copyright 2023-2024</Copyright>
         <PackageProjectUrl>https://github.com/CollapseLauncher/ImageEx</PackageProjectUrl>
         <IsAotCompatible>true</IsAotCompatible>
+        <CsWinRTAotOptimizerEnabled>true</CsWinRTAotOptimizerEnabled>
     </PropertyGroup>
 
 	<PropertyGroup Condition="$(TargetFramework.Contains('net8.0'))">
