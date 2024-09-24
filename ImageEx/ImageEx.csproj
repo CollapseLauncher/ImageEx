@@ -38,6 +38,7 @@
 	<ItemGroup>
 	  <PackageReference Include="CommunityToolkit.WinUI.Extensions" Version="8.1.240916" />
 	  <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2783-prerelease" />
+	  <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
 	</ItemGroup>
 
 </Project>
