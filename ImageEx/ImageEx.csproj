@@ -32,7 +32,7 @@
 	</PropertyGroup>
 	
 	<ItemGroup Condition="$(TargetFramework.Contains('windows'))">
-        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.240829007" />
+        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.240923002" />
 	</ItemGroup>
 	
 	<ItemGroup>
