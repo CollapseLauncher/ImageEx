@@ -32,6 +32,8 @@
 	</PropertyGroup>
 	
 	<ItemGroup Condition="$(TargetFramework.Contains('windows'))">
+        <PackageReference Include="Microsoft.DotNet.ILCompiler" Version="9.0.1" />
+        <PackageReference Include="runtime.win-x64.Microsoft.DotNet.ILCompiler" Version="9.0.1" />
         <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250108002" />
 	</ItemGroup>
 	
