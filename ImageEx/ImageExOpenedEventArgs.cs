@@ -14,7 +14,5 @@ namespace ImageEx
     /// <summary>
     /// Provides data for the <see cref="ImageEx"/> ImageOpened event.
     /// </summary>
-    public class ImageExOpenedEventArgs : EventArgs
-    {
-    }
+    public class ImageExOpenedEventArgs : EventArgs;
 }

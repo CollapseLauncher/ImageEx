@@ -10,7 +10,7 @@ public static class DependencyObjectExtensions
     /// <para>
     /// This method is meant to provide extra flexibility in specific scenarios, and it should not
     /// be used when only the first item is being looked for. In those cases, use one of the
-    /// available <see cref="FindAscendant"/> overloads instead, which will
+    /// available <see cref="FindAscendants"/> overloads instead, which will
     /// offer a more compact syntax as well as better performance in those cases.
     /// </para>
     /// </summary>
