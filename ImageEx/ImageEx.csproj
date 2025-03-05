@@ -32,13 +32,13 @@
 	</PropertyGroup>
 	
 	<ItemGroup Condition="$(TargetFramework.Contains('windows'))">
-        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250208002-preview1" />
+        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250205002" />
 	</ItemGroup>
 	
 	<ItemGroup>
 	  <PackageReference Include="CommunityToolkit.Common" Version="8.4.0" />
 	  <PackageReference Include="CommunityToolkit.WinUI.Extensions" Version="8.2.250129-preview2" />
-	  <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3116-prerelease" />
+	  <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3065.39" />
 	  <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
 	</ItemGroup>
 
