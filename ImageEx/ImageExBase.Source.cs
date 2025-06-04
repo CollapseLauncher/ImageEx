@@ -178,12 +178,22 @@ namespace ImageEx
                 }
                 else
                 {
-                    AttachSource(new BitmapImage(imageUri)
-                    {
-                        CreateOptions = BitmapCreateOptions.IgnoreImageCache
-                    });
+                    AttachSource(GetDeterminedSource(imageUri));
                 }
             }
+        }
+
+        internal static ImageSource GetDeterminedSource(Uri uri)
+        {
+            if (uri.PathAndQuery.EndsWith(".svg", StringComparison.OrdinalIgnoreCase))
+            {
+                return new SvgImageSource(uri);
+            }
+
+            return new BitmapImage(uri)
+            {
+                CreateOptions = BitmapCreateOptions.IgnoreImageCache
+            };
         }
 
         /// <summary>
