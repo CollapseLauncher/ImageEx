@@ -1,7 +1,7 @@
 {
   "version": 1,
   "dependencies": {
-    "net9.0-windows10.0.26100": {
+    "net10.0-windows10.0.26100": {
       "CommunityToolkit.Common": {
         "type": "Direct",
         "requested": "[8.4.0, )",
@@ -20,9 +20,9 @@
       },
       "Microsoft.NET.ILLink.Tasks": {
         "type": "Direct",
-        "requested": "[9.0.5, )",
-        "resolved": "9.0.5",
-        "contentHash": "4L7wbb3Y4BJgIeSnmAf/C6S/qCs9rT1b0dX72uj3qo0qvUH7D0U1tU5ZlC7A3Wb8E/dXK4caOi4JkdLTVJaXhw=="
+        "requested": "[10.0.0-preview.5.25277.114, )",
+        "resolved": "10.0.0-preview.5.25277.114",
+        "contentHash": "lKaVaiJvMwAny3XEQI8zP88GVLKBQeb5VIG25jzGkoO4ilRWJAJpYgP0EmgBi4BjJB5PbKEAuMCEbxYthf2vQw=="
       },
       "Microsoft.Web.WebView2": {
         "type": "Direct",
@@ -128,7 +128,7 @@
         }
       }
     },
-    "net9.0-windows10.0.26100/win-x64": {
+    "net10.0-windows10.0.26100/win-x64": {
       "Microsoft.Web.WebView2": {
         "type": "Direct",
         "requested": "[1.0.3344-prerelease, )",
