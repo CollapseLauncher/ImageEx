@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
         <!-- Platform Properties -->
@@ -32,14 +32,14 @@
 	</PropertyGroup>
 	
 	<ItemGroup Condition="$(TargetFramework.Contains('windows'))">
-        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.250515001-experimental2" />
+        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.250814004-preview" />
 	</ItemGroup>
 	
 	<ItemGroup>
 	  <PackageReference Include="CommunityToolkit.Common" Version="8.4.0" />
 	  <PackageReference Include="CommunityToolkit.WinUI.Extensions" Version="8.2.250402" />
-	  <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3344-prerelease" />
-	  <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.4188" />
+	  <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3477-prerelease" />
+	  <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.4948" />
 	</ItemGroup>
 
 </Project>
