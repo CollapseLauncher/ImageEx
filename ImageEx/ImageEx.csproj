@@ -1,18 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
+    <PropertyGroup>
         <!-- Platform Properties -->
         <Platforms>x64</Platforms>
         <TargetFramework>net9.0-windows10.0.26100.0</TargetFramework>
-        <WindowsSdkPackageVersion>10.0.26100.57</WindowsSdkPackageVersion>
         <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
         <RuntimeIdentifier>win-x64</RuntimeIdentifier>
         <EnableWindowsTargeting>true</EnableWindowsTargeting>
         <EnableMsixTooling>true</EnableMsixTooling>
-		<OutputType>Library</OutputType>
-		<LangVersion>12.0</LangVersion>
-		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-		<DebugType>embedded</DebugType>
+        <OutputType>Library</OutputType>
+        <LangVersion>12.0</LangVersion>
+        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <DebugType>embedded</DebugType>
         <!-- Assembly Info Properties-->
         <AssemblyTitle>ImageEx</AssemblyTitle>
         <Product>ImageEx</Product>
@@ -26,20 +25,20 @@
         <CsWinRTAotOptimizerEnabled>true</CsWinRTAotOptimizerEnabled>
     </PropertyGroup>
 
-	<PropertyGroup Condition="$(TargetFramework.Contains('net8.0'))">
+    <PropertyGroup Condition="$(TargetFramework.Contains('net8.0'))">
         <IsAotCompatible>true</IsAotCompatible>
-		<RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
-	</PropertyGroup>
-	
-	<ItemGroup Condition="$(TargetFramework.Contains('windows'))">
+        <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+    </PropertyGroup>
+    
+    <ItemGroup Condition="$(TargetFramework.Contains('windows'))">
         <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.250814004-preview" />
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <PackageReference Include="CommunityToolkit.Common" Version="8.4.0" />
-	  <PackageReference Include="CommunityToolkit.WinUI.Extensions" Version="8.2.250402" />
-	  <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3477-prerelease" />
-	  <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.4948" />
-	</ItemGroup>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <PackageReference Include="CommunityToolkit.Common" Version="8.4.0" />
+      <PackageReference Include="CommunityToolkit.WinUI.Extensions" Version="8.2.250402" />
+      <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3477-prerelease" />
+      <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.4948" />
+    </ItemGroup>
 
 </Project>
