@@ -30,15 +30,15 @@
         <IsAotCompatible>true</IsAotCompatible>
         <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
     </PropertyGroup>
-    
+
     <ItemGroup Condition="$(TargetFramework.Contains('windows'))">
         <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.251106002" />
     </ItemGroup>
-    
+
     <ItemGroup>
-      <PackageReference Include="CommunityToolkit.Common" Version="8.4.0" />
-      <PackageReference Include="CommunityToolkit.WinUI.Extensions" Version="8.2.250402" />
-      <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.6901" />
+        <PackageReference Include="CommunityToolkit.Common" Version="8.4.0" />
+        <PackageReference Include="CommunityToolkit.WinUI.Extensions" Version="8.2.250402" />
+        <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.6901" />
     </ItemGroup>
 
 </Project>
