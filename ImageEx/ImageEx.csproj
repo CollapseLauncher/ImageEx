@@ -38,7 +38,7 @@
     <ItemGroup>
         <PackageReference Include="CommunityToolkit.Common" Version="8.4.0" />
         <PackageReference Include="CommunityToolkit.WinUI.Extensions" Version="8.2.250402" />
-        <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.6901" />
+        <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.7175" />
     </ItemGroup>
 
 </Project>
