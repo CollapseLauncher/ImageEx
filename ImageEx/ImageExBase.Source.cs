@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 // ReSharper disable AsyncVoidMethod
+
 namespace ImageEx
 {
     /// <summary>
@@ -31,7 +32,7 @@ namespace ImageEx
 
         private static void SourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var control = d as ImageExBase;
+            ImageExBase control = d as ImageExBase;
 
             if (control == null)
             {
@@ -54,7 +55,7 @@ namespace ImageEx
 
         private static bool IsHttpUri(Uri uri)
         {
-            return uri.IsAbsoluteUri && (uri.Scheme == "http" || uri.Scheme == "https");
+            return uri.IsAbsoluteUri && uri.Scheme is "http" or "https";
         }
 
         /// <summary>
@@ -149,41 +150,20 @@ namespace ImageEx
         {
             if (imageUri != null)
             {
-                if (IsCacheEnabled)
-                {
-                    var img = await ProvideCachedResourceAsync(imageUri, token);
+                // -- Ignore cache if the URL is an embedded data. Even if cache option is passed to bitmap source,
+                //    this wouldn't take any effect.
+                ImageSource img = await ImageSourceUtility.TryGetEmbeddedImageSourceFromUri(imageUri, token)
+                               ?? await LoadImageFromUri(imageUri, IsCacheEnabled, token);
 
-                    if (!_tokenSource.IsCancellationRequested)
-                    {
-                        // Only attach our image if we still have a valid request.
-                        AttachSource(img);
-                    }
-                }
-                else if (string.Equals(imageUri.Scheme, "data", StringComparison.OrdinalIgnoreCase))
+                if (!_tokenSource.IsCancellationRequested)
                 {
-                    var source = imageUri.OriginalString;
-                    const string base64Head = "base64,";
-                    var index = source.IndexOf(base64Head, StringComparison.OrdinalIgnoreCase);
-                    if (index >= 0)
-                    {
-                        var bytes = Convert.FromBase64String(source.Substring(index + base64Head.Length));
-                        var bitmap = new BitmapImage();
-                        await bitmap.SetSourceAsync(new MemoryStream(bytes).AsRandomAccessStream());
-
-                        if (!_tokenSource.IsCancellationRequested)
-                        {
-                            AttachSource(bitmap);
-                        }
-                    }
-                }
-                else
-                {
-                    AttachSource(GetDeterminedSource(imageUri));
+                    // Only attach our image if we still have a valid request.
+                    AttachSource(img);
                 }
             }
         }
 
-        internal static ImageSource GetDeterminedSource(Uri uri)
+        internal static ImageSource GetDeterminedSource(Uri uri, bool useCache = false)
         {
             if (uri.PathAndQuery.EndsWith(".svg", StringComparison.OrdinalIgnoreCase))
             {
@@ -192,7 +172,7 @@ namespace ImageEx
 
             return new BitmapImage(uri)
             {
-                CreateOptions = BitmapCreateOptions.IgnoreImageCache
+                CreateOptions = useCache ? BitmapCreateOptions.None : BitmapCreateOptions.IgnoreImageCache
             };
         }
 
@@ -227,12 +207,13 @@ namespace ImageEx
         /// </code>
         /// </example>
         /// <param name="imageUri"><see cref="Uri"/> of the image to load from the cache.</param>
+        /// <param name="useCache">Use bitmap cache whenever possible.</param>
         /// <param name="token">A <see cref="CancellationToken"/> which is used to signal when the current request is outdated.</param>
         /// <returns><see cref="Task"/></returns>
-        protected virtual Task<ImageSource> ProvideCachedResourceAsync(Uri imageUri, CancellationToken token)
+        protected virtual Task<ImageSource> LoadImageFromUri(Uri imageUri, bool useCache, CancellationToken token)
         {
             // By default, we just use the built-in UWP image cache provided within the Image control.
-            return Task.FromResult((ImageSource)new BitmapImage(imageUri));
+            return Task.FromResult(GetDeterminedSource(imageUri, useCache));
         }
     }
 }
