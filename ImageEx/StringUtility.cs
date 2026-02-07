@@ -11,7 +11,7 @@ namespace ImageEx;
 internal static class StringUtility
 {
     public static bool TryGetStreamFromUrlDataString(
-        Uri                                   uri,
+        ReadOnlySpan<char>                    originalUriString,
         out                     string?       mimeType,
         [NotNullWhen(true)] out MemoryStream? stream)
     {
@@ -20,7 +20,6 @@ internal static class StringUtility
         Unsafe.SkipInit(out mimeType);
         Unsafe.SkipInit(out stream);
 
-        ReadOnlySpan<char> originalUriString = uri.OriginalString;
         if (originalUriString.IsEmpty)
         {
             return false;

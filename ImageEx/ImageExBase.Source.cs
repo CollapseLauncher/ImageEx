@@ -79,12 +79,11 @@ namespace ImageEx
             if (source == null)
             {
                 VisualStateManager.GoToState(this, UnloadedState, true);
+                return;
             }
-            else if (source is BitmapSource { PixelHeight: > 0, PixelWidth: > 0 })
-            {
-                VisualStateManager.GoToState(this, LoadedState, true);
-                ImageExOpened?.Invoke(this, new ImageExOpenedEventArgs());
-            }
+
+            VisualStateManager.GoToState(this, LoadedState, true);
+            ImageExOpened?.Invoke(this, new ImageExOpenedEventArgs());
         }
 
         private async void SetSource(object source)
@@ -107,33 +106,23 @@ namespace ImageEx
             }
 
             VisualStateManager.GoToState(this, LoadingState, true);
-            var imageSource = source as ImageSource;
+            ImageSource imageSource = source as ImageSource;
             if (imageSource != null)
             {
                 AttachSource(imageSource);
 
                 return;
             }
-            var uri = source as Uri;
-            if (uri == null)
+
+            Uri sourceAsUri = source as Uri;
+            if (sourceAsUri != null && !IsHttpUri(sourceAsUri) && !sourceAsUri.IsAbsoluteUri)
             {
-                var url = source as string ?? source.ToString();
-                if (!Uri.TryCreate(url, UriKind.RelativeOrAbsolute, out uri))
-                {
-                    VisualStateManager.GoToState(this, FailedState, true);
-                    ImageExFailed?.Invoke(this, new ImageExFailedEventArgs(new UriFormatException("Invalid uri specified.")));
-                    return;
-                }
-            }
-            
-            if (!IsHttpUri(uri) && !uri.IsAbsoluteUri)
-            {
-                uri = new Uri("ms-appx:///" + uri.OriginalString.TrimStart('/'));
+                source = new Uri("ms-appx:///" + sourceAsUri.OriginalString.TrimStart('/'));
             }
             
             try
             {
-                await LoadImageAsync(uri, _tokenSource.Token);
+                await LoadImageFromStringOrUriAsync(source, _tokenSource.Token);
             }
             catch (OperationCanceledException)
             {
@@ -146,14 +135,24 @@ namespace ImageEx
             }
         }
 
-        private async Task LoadImageAsync(Uri imageUri, CancellationToken token)
+        private async Task LoadImageFromStringOrUriAsync(object source, CancellationToken token)
         {
-            if (imageUri != null)
+            string sourceAsString = (source as Uri)?.ToString() ?? source as string;
+            if (!string.IsNullOrEmpty(sourceAsString))
             {
                 // -- Ignore cache if the URL is an embedded data. Even if cache option is passed to bitmap source,
                 //    this wouldn't take any effect.
-                ImageSource img = await ImageSourceUtility.TryGetEmbeddedImageSourceFromUri(imageUri, token)
-                               ?? await LoadImageFromUri(imageUri, IsCacheEnabled, token);
+                ImageSource img = await ImageSourceUtility.TryGetEmbeddedImageSourceFromUri(sourceAsString, token);
+                if (img == null &&
+                    Uri.TryCreate(sourceAsString, UriKind.RelativeOrAbsolute, out Uri uri))
+                {
+                    if (!IsHttpUri(uri) && !uri.IsAbsoluteUri)
+                    {
+                        uri = new Uri("ms-appx:///" + uri.OriginalString.TrimStart('/'));
+                    }
+
+                    img = await LoadImageFromUri(uri, IsCacheEnabled, token);
+                }
 
                 if (!_tokenSource.IsCancellationRequested)
                 {
