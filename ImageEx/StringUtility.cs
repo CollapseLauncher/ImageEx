@@ -58,7 +58,7 @@ internal static class StringUtility
             mimeType = new string(mimeToken);
         }
 
-        // -- Try decode the data from base64 string
+        // -- Try to decode the data from base64 string
         ReadOnlySpan<char> dataSpan = originalUriString[indexOfDataSection..];
         return TryGetStreamFromPureBase64String(dataSpan, out stream) ||
                // -- The data is probably a hex string?

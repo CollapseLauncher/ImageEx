@@ -31,7 +31,7 @@ namespace ImageEx
         /// <summary>
         /// Gets the exception that caused the error condition.
         /// </summary>
-        public Exception ErrorException { get; private set; }
+        public Exception ErrorException { get; }
 
         /// <summary>
         /// Gets the reason for the error condition.

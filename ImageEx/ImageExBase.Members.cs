@@ -45,7 +45,7 @@ namespace ImageEx
         /// <summary>
         /// Identifies the <see cref="LazyLoadingThreshold"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty LazyLoadingThresholdProperty = DependencyProperty.Register(nameof(LazyLoadingThreshold), typeof(double), typeof(ImageExBase), new PropertyMetadata(default(double), LazyLoadingThresholdChanged));
+        public static readonly DependencyProperty LazyLoadingThresholdProperty = DependencyProperty.Register(nameof(LazyLoadingThreshold), typeof(double), typeof(ImageExBase), new PropertyMetadata(0d, LazyLoadingThresholdChanged));
 
         /// <summary>
         /// Returns a mask that represents the alpha channel of an image as a <see cref="CompositionBrush"/>
@@ -79,8 +79,8 @@ namespace ImageEx
         /// </summary>
         public int DecodePixelHeight
         {
-            get { return (int)GetValue(DecodePixelHeightProperty); }
-            set { SetValue(DecodePixelHeightProperty, value); }
+            get => (int)GetValue(DecodePixelHeightProperty);
+            set => SetValue(DecodePixelHeightProperty, value);
         }
 
         /// <summary>
@@ -88,8 +88,8 @@ namespace ImageEx
         /// </summary>
         public DecodePixelType DecodePixelType
         {
-            get { return (DecodePixelType)GetValue(DecodePixelTypeProperty); }
-            set { SetValue(DecodePixelTypeProperty, value); }
+            get => (DecodePixelType)GetValue(DecodePixelTypeProperty);
+            set => SetValue(DecodePixelTypeProperty, value);
         }
 
         /// <summary>
@@ -97,8 +97,8 @@ namespace ImageEx
         /// </summary>
         public int DecodePixelWidth
         {
-            get { return (int)GetValue(DecodePixelWidthProperty); }
-            set { SetValue(DecodePixelWidthProperty, value); }
+            get => (int)GetValue(DecodePixelWidthProperty);
+            set => SetValue(DecodePixelWidthProperty, value);
         }
 
         /// <summary>
@@ -106,8 +106,8 @@ namespace ImageEx
         /// </summary>
         public Stretch Stretch
         {
-            get { return (Stretch)GetValue(StretchProperty); }
-            set { SetValue(StretchProperty, value); }
+            get => (Stretch)GetValue(StretchProperty);
+            set => SetValue(StretchProperty, value);
         }
 
         /// <summary>
@@ -115,8 +115,8 @@ namespace ImageEx
         /// </summary>
         public bool IsCacheEnabled
         {
-            get { return (bool)GetValue(IsCacheEnabledProperty); }
-            set { SetValue(IsCacheEnabledProperty, value); }
+            get => (bool)GetValue(IsCacheEnabledProperty);
+            set => SetValue(IsCacheEnabledProperty, value);
         }
 
         /// <summary>
@@ -125,8 +125,8 @@ namespace ImageEx
         /// <remarks>Windows 10 build 17763 or higher required.</remarks>
         public bool EnableLazyLoading
         {
-            get { return (bool)GetValue(EnableLazyLoadingProperty); }
-            set { SetValue(EnableLazyLoadingProperty, value); }
+            get => (bool)GetValue(EnableLazyLoadingProperty);
+            set => SetValue(EnableLazyLoadingProperty, value);
         }
 
         /// <summary>
@@ -134,8 +134,8 @@ namespace ImageEx
         /// </summary>
         public double LazyLoadingThreshold
         {
-            get { return (double)GetValue(LazyLoadingThresholdProperty); }
-            set { SetValue(LazyLoadingThresholdProperty, value); }
+            get => (double)GetValue(LazyLoadingThresholdProperty);
+            set => SetValue(LazyLoadingThresholdProperty, value);
         }
 
         private static void EnableLazyLoadingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

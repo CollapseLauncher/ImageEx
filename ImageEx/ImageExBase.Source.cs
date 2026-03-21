@@ -26,8 +26,8 @@ namespace ImageEx
         /// </summary>
         public object Source
         {
-            get { return GetValue(SourceProperty); }
-            set { SetValue(SourceProperty, value); }
+            get => GetValue(SourceProperty);
+            set => SetValue(SourceProperty, value);
         }
 
         private static void SourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -39,17 +39,15 @@ namespace ImageEx
                 return;
             }
 
-            if (e.OldValue == null || e.NewValue == null || !e.OldValue.Equals(e.NewValue))
+            if (e.OldValue != null && e.NewValue != null && e.OldValue.Equals(e.NewValue)) return;
+            if (e.NewValue == null || !control.EnableLazyLoading || control._isInViewport)
             {
-                if (e.NewValue == null || !control.EnableLazyLoading || control._isInViewport)
-                {
-                    control._lazyLoadingSource = null;
-                    control.SetSource(e.NewValue);
-                }
-                else
-                {
-                    control._lazyLoadingSource = e.NewValue;
-                }
+                control._lazyLoadingSource = null;
+                control.SetSource(e.NewValue);
+            }
+            else
+            {
+                control._lazyLoadingSource = e.NewValue;
             }
         }
 
@@ -64,16 +62,17 @@ namespace ImageEx
         /// <param name="source"><see cref="ImageSource"/> to assign to the image.</param>
         private void AttachSource(ImageSource source)
         {
-            // Setting the source at this point should call ImageExOpened/VisualStateManager.GoToState
-            // as we register to both the ImageOpened/ImageFailed events of the underlying control.
-            // We only need to call those methods if we fail in other cases before we get here.
-            if (Image is Image image)
+            switch (Image)
             {
-                image.Source = source;
-            }
-            else if (Image is ImageBrush brush)
-            {
-                brush.ImageSource = source;
+                // Setting the source at this point should call ImageExOpened/VisualStateManager.GoToState
+                // as we register to both the ImageOpened/ImageFailed events of the underlying control.
+                // We only need to call those methods if we fail in other cases before we get here.
+                case Image image:
+                    image.Source = source;
+                    break;
+                case ImageBrush brush:
+                    brush.ImageSource = source;
+                    break;
             }
 
             if (source == null)

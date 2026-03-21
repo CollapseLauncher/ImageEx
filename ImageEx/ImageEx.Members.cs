@@ -23,8 +23,8 @@ namespace ImageEx
         /// </summary>
         public Thickness NineGrid
         {
-            get { return (Thickness)GetValue(NineGridProperty); }
-            set { SetValue(NineGridProperty, value); }
+            get => (Thickness)GetValue(NineGridProperty);
+            set => SetValue(NineGridProperty, value);
         }
 
         /// <inheritdoc/>

@@ -94,13 +94,14 @@ namespace ImageEx
         /// <param name="handler">Routed Event Handler</param>
         protected void AttachImageOpened(RoutedEventHandler handler)
         {
-            if (Image is Image image)
+            switch (Image)
             {
-                image.ImageOpened += handler;
-            }
-            else if (Image is ImageBrush brush)
-            {
-                brush.ImageOpened += handler;
+                case Image image:
+                    image.ImageOpened += handler;
+                    break;
+                case ImageBrush brush:
+                    brush.ImageOpened += handler;
+                    break;
             }
         }
 

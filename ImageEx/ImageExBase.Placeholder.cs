@@ -16,7 +16,7 @@ namespace ImageEx
             nameof(PlaceholderSource),
             typeof(ImageSource),
             typeof(ImageExBase),
-            new PropertyMetadata(default(ImageSource), PlaceholderSourceChanged));
+            new PropertyMetadata(null, PlaceholderSourceChanged));
 
         /// <summary>
         /// Identifies the <see cref="PlaceholderStretch"/> dependency property.
@@ -35,8 +35,8 @@ namespace ImageEx
         /// </value>
         public ImageSource PlaceholderSource
         {
-            get { return (ImageSource)GetValue(PlaceholderSourceProperty); }
-            set { SetValue(PlaceholderSourceProperty, value); }
+            get => (ImageSource)GetValue(PlaceholderSourceProperty);
+            set => SetValue(PlaceholderSourceProperty, value);
         }
 
         private static void PlaceholderSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -63,8 +63,8 @@ namespace ImageEx
         /// </value>
         public Stretch PlaceholderStretch
         {
-            get { return (Stretch)GetValue(PlaceholderStretchProperty); }
-            set { SetValue(PlaceholderStretchProperty, value); }
+            get => (Stretch)GetValue(PlaceholderStretchProperty);
+            set => SetValue(PlaceholderStretchProperty, value);
         }
     }
 }
