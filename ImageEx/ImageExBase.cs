@@ -77,7 +77,7 @@ namespace ImageEx
         /// <summary>
         /// Gets the backing image object
         /// </summary>
-        protected object Image { get; private set; }
+        public object Image { get; private set; }
 
         /// <inheritdoc/>
         public bool WaitUntilLoaded => true;
