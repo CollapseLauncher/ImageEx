@@ -78,11 +78,10 @@ namespace ImageEx
             if (source == null)
             {
                 VisualStateManager.GoToState(this, UnloadedState, true);
-                return;
             }
 
-            VisualStateManager.GoToState(this, LoadedState, true);
-            ImageExOpened?.Invoke(this, new ImageExOpenedEventArgs());
+            // VisualStateManager.GoToState(this, LoadedState, true);
+            // ImageExOpened?.Invoke(this, new ImageExOpenedEventArgs());
         }
 
         private async void SetSource(object source)
