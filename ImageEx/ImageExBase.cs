@@ -18,18 +18,13 @@ namespace ImageEx
         /// <returns>This method returns <see langword="true"/> if there is any intersection, otherwise <see langword="false"/>.</returns>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IntersectsWith(this Rect rect1, Rect rect2)
-        {
-            if (rect1.IsEmpty || rect2.IsEmpty)
-            {
-                return false;
-            }
-
-            return (rect1.Left <= rect2.Right) &&
-                   (rect1.Right >= rect2.Left) &&
-                   (rect1.Top <= rect2.Bottom) &&
-                   (rect1.Bottom >= rect2.Top);
-        }
+        public static bool IntersectsWith(this Rect rect1, Rect rect2) =>
+            !rect1.IsEmpty &&
+            !rect2.IsEmpty &&
+            rect1.Left <= rect2.Right &&
+            rect1.Right >= rect2.Left &&
+            rect1.Top <= rect2.Bottom &&
+            rect1.Bottom >= rect2.Top;
     }
 
     /// <summary>
@@ -85,8 +80,11 @@ namespace ImageEx
         /// <summary>
         /// Initializes a new instance of the <see cref="ImageExBase"/> class.
         /// </summary>
-        // ReSharper disable once PublicConstructorInAbstractClass
-        public ImageExBase() { }
+        protected ImageExBase()
+        {
+            Loaded   += OnLoaded;
+            Unloaded += OnUnloaded;
+        }
 
         /// <summary>
         /// Attach image opened event handler
@@ -111,13 +109,14 @@ namespace ImageEx
         /// <param name="handler">RoutedEventHandler</param>
         protected void RemoveImageOpened(RoutedEventHandler handler)
         {
-            if (Image is Image image)
+            switch (Image)
             {
-                image.ImageOpened -= handler;
-            }
-            else if (Image is ImageBrush brush)
-            {
-                brush.ImageOpened -= handler;
+                case Image image:
+                    image.ImageOpened -= handler;
+                    break;
+                case ImageBrush brush:
+                    brush.ImageOpened -= handler;
+                    break;
             }
         }
 
@@ -127,13 +126,14 @@ namespace ImageEx
         /// <param name="handler">Exception Routed Event Handler</param>
         protected void AttachImageFailed(ExceptionRoutedEventHandler handler)
         {
-            if (Image is Image image)
+            switch (Image)
             {
-                image.ImageFailed += handler;
-            }
-            else if (Image is ImageBrush brush)
-            {
-                brush.ImageFailed += handler;
+                case Image image:
+                    image.ImageFailed += handler;
+                    break;
+                case ImageBrush brush:
+                    brush.ImageFailed += handler;
+                    break;
             }
         }
 
@@ -143,13 +143,14 @@ namespace ImageEx
         /// <param name="handler">Exception Routed Event Handler</param>
         protected void RemoveImageFailed(ExceptionRoutedEventHandler handler)
         {
-            if (Image is Image image)
+            switch (Image)
             {
-                image.ImageFailed -= handler;
-            }
-            else if (Image is ImageBrush brush)
-            {
-                brush.ImageFailed -= handler;
+                case Image image:
+                    image.ImageFailed -= handler;
+                    break;
+                case ImageBrush brush:
+                    brush.ImageFailed -= handler;
+                    break;
             }
         }
 
@@ -205,61 +206,50 @@ namespace ImageEx
             ImageExFailed?.Invoke(this, new ImageExFailedEventArgs(new Exception(e.ErrorMessage)));
         }
 
-        private void ImageExBase_LayoutUpdated(object sender, object e)
+        private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            InvalidateLazyLoading();
+            EffectiveViewportChanged += OnEffectiveViewportChanged;
         }
 
-        private void InvalidateLazyLoading()
+        private void OnUnloaded(object sender, RoutedEventArgs e)
         {
-            if (!IsLoaded)
+            EffectiveViewportChanged -= OnEffectiveViewportChanged;
+        }
+
+        private void OnEffectiveViewportChanged(FrameworkElement                  sender,
+                                                EffectiveViewportChangedEventArgs args)
+        {
+            if (!EnableLazyLoading || !IsLoaded)
+            {
+                return;
+            }
+
+            double threshold = LazyLoadingThreshold;
+            Rect controlRect = new(-threshold,
+                                   -threshold,
+                                   ActualWidth + threshold * 2,
+                                   ActualHeight + threshold * 2);
+
+            bool isInViewport = args.EffectiveViewport.IntersectsWith(controlRect);
+
+            if (!isInViewport)
             {
                 _isInViewport = false;
                 return;
             }
 
-            // Find the first ascendant ScrollViewer, if not found, use the root element.
-            FrameworkElement hostElement = null;
-            var ascendants = this.FindAscendants().OfType<FrameworkElement>();
-            foreach (var ascendant in ascendants)
+            _isInViewport = true;
+            if (_lazyLoadingSource is null)
             {
-                hostElement = ascendant;
-                if (hostElement is ScrollViewer)
-                {
-                    break;
-                }
-            }
-
-            if (hostElement == null)
-            {
-                _isInViewport = false;
                 return;
             }
 
-            var controlRect = TransformToVisual(hostElement)
-                .TransformBounds(new Rect(0, 0, ActualWidth, ActualHeight));
-            var lazyLoadingThreshold = LazyLoadingThreshold;
-            var hostRect = new Rect(
-                0 - lazyLoadingThreshold,
-                0 - lazyLoadingThreshold,
-                hostElement.ActualWidth + (2 * lazyLoadingThreshold),
-                hostElement.ActualHeight + (2 * lazyLoadingThreshold));
+            object source = _lazyLoadingSource;
+            _lazyLoadingSource = null;
+            SetSource(source);
 
-            if (controlRect.IntersectsWith(hostRect))
-            {
-                _isInViewport = true;
-
-                if (_lazyLoadingSource != null)
-                {
-                    var source = _lazyLoadingSource;
-                    _lazyLoadingSource = null;
-                    SetSource(source);
-                }
-            }
-            else
-            {
-                _isInViewport = false;
-            }
+            // Detach because it doesn't need to track the viewport once shown.
+            EffectiveViewportChanged -= OnEffectiveViewportChanged;
         }
     }
 }

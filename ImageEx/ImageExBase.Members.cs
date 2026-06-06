@@ -40,12 +40,12 @@ namespace ImageEx
         /// <summary>
         /// Identifies the <see cref="EnableLazyLoading"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty EnableLazyLoadingProperty = DependencyProperty.Register(nameof(EnableLazyLoading), typeof(bool), typeof(ImageExBase), new PropertyMetadata(false, EnableLazyLoadingChanged));
+        public static readonly DependencyProperty EnableLazyLoadingProperty = DependencyProperty.Register(nameof(EnableLazyLoading), typeof(bool), typeof(ImageExBase), new PropertyMetadata(false));
 
         /// <summary>
         /// Identifies the <see cref="LazyLoadingThreshold"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty LazyLoadingThresholdProperty = DependencyProperty.Register(nameof(LazyLoadingThreshold), typeof(double), typeof(ImageExBase), new PropertyMetadata(0d, LazyLoadingThresholdChanged));
+        public static readonly DependencyProperty LazyLoadingThresholdProperty = DependencyProperty.Register(nameof(LazyLoadingThreshold), typeof(double), typeof(ImageExBase), new PropertyMetadata(0d));
 
         /// <summary>
         /// Returns a mask that represents the alpha channel of an image as a <see cref="CompositionBrush"/>
@@ -136,32 +136,6 @@ namespace ImageEx
         {
             get => (double)GetValue(LazyLoadingThresholdProperty);
             set => SetValue(LazyLoadingThresholdProperty, value);
-        }
-
-        private static void EnableLazyLoadingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is ImageExBase control)
-            {
-                var value = (bool)e.NewValue;
-                if (value)
-                {
-                    control.LayoutUpdated += control.ImageExBase_LayoutUpdated;
-
-                    control.InvalidateLazyLoading();
-                }
-                else
-                {
-                    control.LayoutUpdated -= control.ImageExBase_LayoutUpdated;
-                }
-            }
-        }
-
-        private static void LazyLoadingThresholdChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is ImageExBase { EnableLazyLoading: true } control)
-            {
-                control.InvalidateLazyLoading();
-            }
         }
     }
 }
