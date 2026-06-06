@@ -82,8 +82,8 @@ namespace ImageEx
         /// </summary>
         protected ImageExBase()
         {
-            Loaded   += OnLoaded;
-            Unloaded += OnUnloaded;
+            Unloaded                 += OnUnloaded;
+            EffectiveViewportChanged += OnEffectiveViewportChanged;
         }
 
         /// <summary>
@@ -204,11 +204,6 @@ namespace ImageEx
         {
             VisualStateManager.GoToState(this, FailedState, true);
             ImageExFailed?.Invoke(this, new ImageExFailedEventArgs(new Exception(e.ErrorMessage)));
-        }
-
-        private void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            EffectiveViewportChanged += OnEffectiveViewportChanged;
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
