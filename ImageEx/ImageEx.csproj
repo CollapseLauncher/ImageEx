@@ -3,7 +3,7 @@
     <PropertyGroup>
         <!-- Platform Properties -->
         <Platforms>x64</Platforms>
-        <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
+        <TargetFramework>net11.0-windows10.0.26100.0</TargetFramework>
         <WindowsSdkPackageVersion>10.0.26100.87</WindowsSdkPackageVersion>
         <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
         <RuntimeIdentifier>win-x64</RuntimeIdentifier>
@@ -26,9 +26,9 @@
         <CsWinRTAotOptimizerEnabled>true</CsWinRTAotOptimizerEnabled>
     </PropertyGroup>
 
-    <PropertyGroup Condition="$(TargetFramework.Contains('net8.0'))">
-        <IsAotCompatible>true</IsAotCompatible>
-        <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+    <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net11.0'))">
+        <!-- .NET 11 feature - Runtime Async -->
+        <Features>runtime-async=on</Features>
     </PropertyGroup>
 
     <ItemGroup Condition="$(TargetFramework.Contains('windows'))">
